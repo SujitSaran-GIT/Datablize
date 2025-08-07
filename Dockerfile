@@ -1,22 +1,31 @@
-# Dockerfile
-FROM node:20-alpine
+# Multi-stage build for production
+FROM node:20-alpine AS builder
 
 WORKDIR /app
 
-# Copy package files first for better caching
-COPY package.json ./
+# Copy package files
+COPY package*.json ./
 
 # Install dependencies
-RUN npm install
+RUN npm ci
 
-# Copy all other files
+# Copy source code
 COPY . .
 
 # Build the application
 RUN npm run build
 
-# Expose the port the app runs on
-EXPOSE 5173
+# Production stage with nginx
+FROM nginx:alpine
 
-# Command to run the application
-CMD ["npm", "run", "dev"]
+# Copy built assets from builder stage
+COPY --from=builder /app/dist /usr/share/nginx/html
+
+# Copy nginx configuration
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+# Expose port 3100 (to avoid conflict with Dokploy's Traefik)
+EXPOSE 3100
+
+# Start nginx
+CMD ["nginx", "-g", "daemon off;"]
