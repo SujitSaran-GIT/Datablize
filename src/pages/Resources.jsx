@@ -1,72 +1,12 @@
-import React, { useState, useEffect, useRef } from 'react';
-
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import Logo from '../components/common/Logo';
-import { ArrowRight, BookOpen, Check, Download, FileAxis3d, FileBadge, FileBarChart, FileBox, FileCheck, FileClock, FileCode, FileCog, FileDigit, FileHeart, FileInput, FileKey, FileMinus, FileOutput, FilePen, FileQuestion, FileScan, FileSearch, FileSignature, FileSpreadsheet, FileStack, FileText, FileUp, FileVideo, Film, Headphones, Play, Youtube } from 'lucide-react';
+import { useTheme } from '../context/ThemeContext';
+import { ArrowRight, BookOpen, ChevronRight, Download, FileAxis3d, FileBadge, FileBarChart, FileBox, FileCheck, FileClock, FileCode, FileCog, FileDigit, FileHeart, FileInput, FileKey, FileMinus, FileOutput, FilePen, FileQuestion, FileScan, FileSearch, FileSignature, FileSpreadsheet, FileStack, FileText, FileUp, FileVideo, Film, Headphones, Play, Youtube } from 'lucide-react';
 import TabsNavigation from '../components/common/TabNavigation';
 
-// Reusing components from Services page
-// const FloatingElement = ({ children, delay = 0, amplitude = 20 }) => {
-//   const [offset, setOffset] = useState(0);
-
-//   useEffect(() => {
-//     const interval = setInterval(() => {
-//       setOffset(prev => prev + 0.02);
-//     }, 16);
-//     return () => clearInterval(interval);
-//   }, []);
-
-//   return (
-//     <div
-//       className="transition-transform duration-100"
-//       style={{
-//         transform: `translateY(${Math.sin(offset + delay) * amplitude}px) rotateY(${Math.sin(offset * 0.5) * 10}deg)`
-//       }}
-//     >
-//       {children}
-//     </div>
-//   );
-// };
-
-// const Card3D = ({ children, className = "", index = 0 }) => {
-//   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-//   const [isHovered, setIsHovered] = useState(false);
-//   const cardRef = useRef(null);
-
-//   const handleMouseMove = (e) => {
-//     if (!cardRef.current) return;
-//     const rect = cardRef.current.getBoundingClientRect();
-//     const x = (e.clientX - rect.left - rect.width / 2) / rect.width;
-//     const y = (e.clientY - rect.top - rect.height / 2) / rect.height;
-//     setMousePos({ x: x * 20, y: y * -20 });
-//   };
-
-//   return (
-//     <div
-//       ref={cardRef}
-//       className={`relative perspective-1000 ${className}`}
-//       onMouseMove={handleMouseMove}
-//       onMouseEnter={() => setIsHovered(true)}
-//       onMouseLeave={() => {
-//         setIsHovered(false);
-//         setMousePos({ x: 0, y: 0 });
-//       }}
-//       style={{
-//         transform: `rotateX(${mousePos.y}deg) rotateY(${mousePos.x}deg)`,
-//         transition: isHovered ? 'none' : 'transform 0.5s ease-out',
-//         transformStyle: 'preserve-3d'
-//       }}
-//     >
-//       <div className="relative transform-gpu" style={{ transform: 'translateZ(50px)' }}>
-//         {children}
-//       </div>
-//     </div>
-//   );
-// };
-
-// Resources Hero Section
 const ResourcesHero = () => {
+  const { themeConfig } = useTheme();
   const [activeIndex, setActiveIndex] = useState(0);
   const resourceTypes = [
     "Whitepapers",
@@ -84,160 +24,83 @@ const ResourcesHero = () => {
   }, []);
 
   return (
-    <section className="relative py-20 md:min-h-screen flex items-center overflow-hidden bg-gradient-to-br from-[#E3F2FD] via-[#E8F5E9] to-[#F1F8E9]">
-      {/* Dynamic Grid Background - Reduced on mobile */}
-      <div className="absolute inset-0 opacity-20">
-        <div className="grid grid-cols-6 md:grid-cols-12 grid-rows-12 h-full w-full">
-          {[...Array(72)].map((_, i) => (
-            <motion.div
-              key={i}
-              className="border border-white/10"
-              initial={{ opacity: 0 }}
-              animate={{
-                opacity: [0, 0.3, 0],
-                transition: {
-                  duration: 4 + Math.random() * 3,
-                  repeat: Infinity,
-                  delay: Math.random() * 2
-                }
-              }}
-            />
-          ))}
-        </div>
-      </div>
-
-      {/* Floating Orbs - Smaller on mobile */}
-      <div className="absolute inset-0 overflow-hidden">
-        {[15, 25, 35, 45].map((size, i) => (
-          <motion.div
-            key={i}
-            className="absolute rounded-full bg-gradient-to-br from-[#B3E5FC] to-[#4FC3F7]"
-            style={{
-              width: `${size}px`,
-              height: `${size}px`,
-              left: `${5 + i * 20}%`,
-              top: `${15 + i * 10}%`,
-              filter: 'blur(10px)',
-              opacity: 0.3
-            }}
-            animate={{
-              y: [0, 20, 0],
-              x: [0, 15, 0],
-              transition: {
-                duration: 10 + i * 2,
-                repeat: Infinity,
-                ease: "easeInOut"
-              }
-            }}
-          />
-        ))}
-      </div>
-
-      <div className="container mx-auto px-4 sm:px-6 relative z-10">
-        <div className="flex flex-col lg:flex-row items-center gap-8 md:gap-16">
-          {/* Animated Resources Showcase - Made responsive */}
-          <div className="w-full lg:w-1/2 order-2 lg:order-1 mt-10 lg:mt-0">
-            <motion.div
-              className="relative h-64 sm:h-80 md:h-96 w-full rounded-2xl md:rounded-3xl overflow-hidden border border-white/20 shadow-xl md:shadow-2xl"
-            >
-              <div className="absolute inset-0 bg-gradient-to-br from-[#0D47A1]/30 to-[#42A5F5]/30 backdrop-blur-sm md:backdrop-blur-md">
-                {resourceTypes.map((type, idx) => (
-                  <motion.div
-                    key={type}
-                    className="absolute inset-0 flex items-center justify-center p-6 sm:p-12"
-                    initial={{ opacity: 0 }}
-                    animate={{
-                      opacity: activeIndex === idx ? 1 : 0,
-                      scale: activeIndex === idx ? 1 : 0.8
-                    }}
-                    transition={{ duration: 0.8 }}
-                  >
-                    <div className="text-center">
-                      <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-4 sm:mb-6 bg-gradient-to-br from-[#B3E5FC] to-[#4FC3F7] rounded-xl md:rounded-2xl flex items-center justify-center shadow-lg">
-                        {[
-                          <FileText size={24} className="text-[#0D47A1]" />,
-                          <FileBarChart size={24} className="text-[#0D47A1]" />,
-                          <BookOpen size={24} className="text-[#0D47A1]" />,
-                          <FileCode size={24} className="text-[#0D47A1]" />,
-                          <FileQuestion size={24} className="text-[#0D47A1]" />
-                        ][idx]}
-                      </div>
-                      <h3 className="text-xl sm:text-2xl font-bold text-white mb-2 sm:mb-3">{type}</h3>
-                      <p className="text-sm sm:text-base text-white/80">
-                        {[
-                          "In-depth research and analysis on industry trends",
-                          "Real-world implementations and success stories",
-                          "Practical how-to guides and best practices",
-                          "Technical documentation and specifications",
-                          "Answers to common questions and challenges"
-                        ][idx]}
-                      </p>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </motion.div>
-          </div>
-
-          {/* Content - Made responsive */}
-          <div className="w-full lg:w-1/2 space-y-6 md:space-y-8 order-1 lg:order-2">
-            <motion.div
-              initial={{ opacity: 0, x: -50 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-            >
+    <section className={`relative flex items-center overflow-hidden min-h-full pt-20 pb-16 lg:pt-16 lg:pb-20 ${themeConfig.background}`}>
+      <div className="container mx-auto px-4 sm:px-24 relative z-10">
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+          {/* Content */}
+          <div className="space-y-6 md:space-y-8 order-2 lg:order-1">
+            <div>
               <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6 leading-tight">
-                <span className="text-[#0D47A1]">Resources & </span>
-                <span className="bg-gradient-to-r from-[#0D47A1] via-[#1976D2] to-[#42A5F5] bg-clip-text text-transparent">
-                  Insights
+                <span className={`bg-gradient-to-r ${themeConfig.gradientText} bg-clip-text`}>
+                  Resources & 
+                </span>
+                <br />
+                <span className={themeConfig.textPrimary}>Insights</span>
+                <br />
+                <span className={`bg-gradient-to-r ${themeConfig.gradientTextSecondary} bg-clip-text`}>
+                  for Intelligent Management
                 </span>
               </h1>
-              <p className="text-lg sm:text-xl text-[#0D47A1] mb-4 sm:mb-6">
-                Explore our latest thinking on enterprise document management and process automation. Gain valuable knowledge to accelerate your digital transformation.
+            </div>
+
+            <div>
+              <p className={`text-md sm:text-lg lg:text-xl mb-4 ${themeConfig.textPrimary}/80 font-medium leading-relaxed`}>
+                Explore our latest thinking on enterprise document management and process automation.
               </p>
-            </motion.div>
+              <p className={`text-sm sm:text-md ${themeConfig.textPrimary}/70 leading-relaxed`}>
+                Gain valuable knowledge to accelerate your digital transformation with our comprehensive library of resources.
+              </p>
+            </div>
 
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.3, duration: 0.8 }}
-              className="space-y-3 md:space-y-4"
-            >
-              {[
-                "Industry-leading whitepapers",
-                "Comprehensive case studies",
-                "Practical implementation guides",
-                "Detailed product documentation",
-                "Expert-curated webinars"
-              ].map((feature, i) => (
-                <motion.div
-                  key={feature}
-                  className="flex items-center gap-3"
-                  whileHover={{ x: 5 }}
-                >
-                  <div className="w-6 h-6 sm:w-8 sm:h-8 bg-[#B3E5FC] rounded-full flex items-center justify-center shrink-0">
-                    <Check className="text-[#0D47A1]" size={14} />
+            <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
+              <Link to="/contact">
+                <button className={`group relative px-5 sm:px-6 py-2 sm:py-3 ${themeConfig.button.primary} rounded-lg sm:rounded-xl font-bold text-sm sm:text-md shadow-lg sm:shadow-xl overflow-hidden transform hover:scale-105 transition-all duration-300`}>
+                  <div className={`absolute inset-0 ${themeConfig.button.hover} transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left`}></div>
+                  <div className="relative flex items-center gap-2 sm:gap-3">
+                    <span>Subscribe for updates</span>
+                    <ChevronRight size={16} className="group-hover:translate-x-1 transition-transform duration-300" />
                   </div>
-                  <span className="text-sm sm:text-base text-[#0D47A1]/80">{feature}</span>
-                </motion.div>
-              ))}
-            </motion.div>
+                </button>
+              </Link>
+            </div>
+          </div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.6, duration: 0.5 }}
-              className="flex flex-wrap gap-3 sm:gap-4 pt-4 sm:pt-6"
-            >
-              <button className="px-6 py-2 sm:px-8 sm:py-3 bg-gradient-to-r from-[#0D47A1] to-[#1976D2] text-white rounded-lg sm:rounded-xl font-bold hover:shadow-lg hover:shadow-[#0D47A1]/30 sm:hover:shadow-[#0D47A1]/50 transition-all duration-300 flex items-center gap-2 text-sm sm:text-base">
-                <span>Browse Resources</span>
-                <ArrowRight size={16} />
-              </button>
-              <button className="px-6 py-2 sm:px-8 sm:py-3 bg-transparent border border-[#B3E5FC] text-[#0D47A1] rounded-lg sm:rounded-xl font-bold hover:bg-[#B3E5FC]/10 transition-all duration-300 flex items-center gap-2 text-sm sm:text-base">
-                <span>Subscribe for Updates</span>
-                <FileInput size={16} />
-              </button>
-            </motion.div>
+          {/* Image Section */}
+          <div className="relative order-1 lg:order-2 mb-8 lg:mb-0">
+            <div className="relative max-w-md sm:max-w-lg mx-auto">
+              <div className={`relative h-64 sm:h-80 md:h-96 w-full rounded-lg sm:rounded-xl overflow-hidden border-2 ${themeConfig.border} shadow-lg sm:shadow-xl`}>
+                <div className={`absolute inset-0 bg-gradient-to-br ${themeConfig.heroOverlayGradient} backdrop-blur-sm`}>
+                  {resourceTypes.map((type, idx) => (
+                    <div
+                      key={type}
+                      className={`absolute inset-0 flex items-center justify-center p-6 sm:p-8 transition-opacity duration-500 ${activeIndex === idx ? 'opacity-100' : 'opacity-0'}`}
+                    >
+                      <div className="text-center">
+                        <div className={`w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-4 sm:mb-6 ${themeConfig.resourceIconBackground} rounded-lg sm:rounded-xl flex items-center justify-center shadow-lg`}>
+                          {[
+                            <FileText size={24} className={themeConfig.resourceIconColor} />,
+                            <FileBarChart size={24} className={themeConfig.resourceIconColor} />,
+                            <BookOpen size={24} className={themeConfig.resourceIconColor} />,
+                            <FileCode size={24} className={themeConfig.resourceIconColor} />,
+                            <FileQuestion size={24} className={themeConfig.resourceIconColor} />
+                          ][idx]}
+                        </div>
+                        <h3 className={`text-xl sm:text-2xl font-bold mb-2 sm:mb-3 ${themeConfig.textInverted}`}>{type}</h3>
+                        <p className={`text-sm sm:text-base ${themeConfig.textInvertedSecondary}`}>
+                          {[
+                            "In-depth research and analysis on industry trends",
+                            "Real-world implementations and success stories",
+                            "Practical how-to guides and best practices",
+                            "Technical documentation and specifications",
+                            "Answers to common questions and challenges"
+                          ][idx]}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -245,8 +108,8 @@ const ResourcesHero = () => {
   );
 };
 
-// Resources Tabs Section
 const ResourcesTabs = () => {
+  const { themeConfig } = useTheme();
   const [activeTab, setActiveTab] = useState('whitepapers');
 
   const tabs = [
@@ -549,88 +412,92 @@ const ResourcesTabs = () => {
   };
 
   return (
-    <section className="py-20 bg-gradient-to-b from-white to-[#E3F2FD]/30">
-      <div className="container mx-auto px-6">
+    <section className={`relative py-20 ${themeConfig.sectionBackground} overflow-hidden`}>
+      <div className="container mx-auto px-6 relative z-10">
         <div className="text-center mb-16">
-          <h2 className="text-4xl lg:text-5xl font-bold mb-6 bg-gradient-to-r from-[#0D47A1] via-[#1976D2] to-[#42A5F5] bg-clip-text text-transparent pb-2">
+          <h2 className={`text-4xl lg:text-5xl font-bold mb-6 ${themeConfig.gradientText} pb-2`}>
             Knowledge Center
           </h2>
-          <div className="w-24 h-1 bg-gradient-to-r from-[#42A5F5] to-[#0D47A1] mx-auto rounded-full mb-6"></div>
-          <p className="text-xl text-[#0D47A1]/80 max-w-3xl mx-auto">
+          <div className={`w-24 h-1 ${themeConfig.gradientDivider} mx-auto rounded-full mb-6`}></div>
+          <p className={`text-xl ${themeConfig.textPrimary}/80 max-w-3xl mx-auto`}>
             Access our comprehensive library of resources to support your document management journey.
           </p>
         </div>
 
         {/* Tabs Navigation */}
-        
         <TabsNavigation
           tabs={tabs}
           activeTab={activeTab}
           setActiveTab={setActiveTab}
-          activeTabColor="from-[#34699A] to-[#113F67]"
-          inactiveTabColor="text-[#113F67] hover:bg-[#113F67]/10"
-          iconColor="text-[#34699A]"
-          activeIconColor="text-white"
-          gradientFadeColor="from-[#113F67]/5"
+          activeTabColor={themeConfig.tabActiveBackground}
+          inactiveTabColor={themeConfig.tabInactiveText}
+          iconColor={themeConfig.tabIconColor}
+          activeIconColor={themeConfig.tabActiveIconColor}
+          gradientFadeColor={themeConfig.tabGradientFade}
         />
 
         {/* Tab Content */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
           {resources[activeTab].map((resource, index) => (
-            <div key={index} index={index} className="h-full">
-              <div className="group h-full p-6 bg-gradient-to-br from-white to-[#E3F2FD]/10 rounded-2xl shadow-xl border border-white/20 hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2">
+            <motion.div 
+              key={index}
+              whileHover={{ y: -5 }}
+              transition={{ duration: 0.3 }}
+              className="h-full"
+            >
+              <div className={`group h-full p-6 ${themeConfig.resourceCardBackground} rounded-2xl shadow-xl border ${themeConfig.border} hover:shadow-2xl transition-all duration-500`}>
                 <div className={`w-12 h-12 bg-gradient-to-r ${resource.color} rounded-xl flex items-center justify-center mb-4 shadow-lg group-hover:scale-110 transition-transform duration-300`}>
                   <resource.icon size={20} className="text-white" />
                 </div>
-                <h3 className="text-lg font-bold text-[#0D47A1] group-hover:text-[#1976D2] transition-colors duration-300 mb-2">
+                <h3 className={`text-lg font-bold ${themeConfig.textPrimary} group-hover:${themeConfig.textHover} transition-colors duration-300 mb-2`}>
                   {resource.title}
                 </h3>
-                <p className="text-sm text-[#0D47A1]/70 leading-relaxed mb-4">
+                <p className={`text-sm ${themeConfig.textSecondary} leading-relaxed mb-4`}>
                   {resource.description}
                 </p>
-                <div className="flex justify-between items-center text-xs text-[#0D47A1]/60">
+                <div className={`flex justify-between items-center text-xs ${themeConfig.textSecondary}/60`}>
                   <span>{resource.type} • {resource.size}</span>
                   <span>{resource.date}</span>
                 </div>
                 {resource.duration && (
-                  <div className="mt-2 text-xs text-[#0D47A1]/60">
+                  <div className={`mt-2 text-xs ${themeConfig.textSecondary}/60`}>
                     Duration: {resource.duration}
                   </div>
                 )}
                 <div className="mt-4">
-                  <button className="group flex items-center gap-2 text-[#0D47A1] hover:text-[#1976D2] transition-colors duration-300">
+                  <button className={`group flex items-center gap-2 ${themeConfig.textPrimary} hover:${themeConfig.textHover} transition-colors duration-300`}>
                     <span className="font-medium">Download</span>
                     <Download size={16} className="group-hover:translate-y-0.5 transition-transform duration-300" />
                   </button>
                 </div>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
 
         {/* CTA */}
         <div className="mt-16 max-w-4xl mx-auto">
           <div>
-            <div className="bg-gradient-to-r from-[#0D47A1] to-[#1976D2] rounded-3xl p-8 text-center text-white shadow-2xl">
+            <div className={`bg-gradient-to-r ${themeConfig.ctaGradient} rounded-3xl p-8 text-center text-white shadow-2xl`}>
               <h3 className="text-2xl font-bold mb-4">Stay Updated</h3>
-              <p className="mb-6 text-white/90 max-w-2xl mx-auto">
+              <p className={`mb-6 ${themeConfig.textInvertedSecondary} max-w-2xl mx-auto`}>
                 Subscribe to our newsletter to receive the latest insights, guides, and industry best practices.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-lg mx-auto">
                 <input
                   type="email"
                   placeholder="Your email address"
-                  className="flex-grow px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-white/50"
+                  className={`flex-grow px-4 py-3 rounded-xl ${themeConfig.inputBackground} border ${themeConfig.inputBorder} text-white placeholder-white/60 focus:outline-none focus:ring-2 ${themeConfig.inputFocusRing}`}
                 />
-                <button className="group relative px-8 py-3 bg-gradient-to-r from-[#B3E5FC] to-white text-[#0D47A1] rounded-2xl font-bold text-lg shadow-2xl overflow-hidden transform hover:scale-105 transition-all duration-300">
-                  <div className="absolute inset-0 bg-white/80 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
+                <button className={`group relative px-8 py-3 ${themeConfig.button.primary} rounded-2xl font-bold text-lg shadow-2xl overflow-hidden transform hover:scale-105 transition-all duration-300`}>
+                  <div className={`absolute inset-0 ${themeConfig.button.hover} transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left`}></div>
                   <div className="relative flex items-center justify-center gap-3">
                     <span>Subscribe</span>
                     <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform duration-300" />
                   </div>
                 </button>
               </div>
-              <p className="mt-4 text-xs text-white/60">
+              <p className={`mt-4 text-xs ${themeConfig.textInvertedSecondary}/60`}>
                 We respect your privacy. Unsubscribe at any time.
               </p>
             </div>
@@ -641,7 +508,6 @@ const ResourcesTabs = () => {
   );
 };
 
-// Resources Page Main Component
 const Resources = () => {
   return (
     <div className="overflow-hidden">

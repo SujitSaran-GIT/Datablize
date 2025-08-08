@@ -14,12 +14,17 @@ import PrivacyPolicy from './pages/PrivacyPolicy';
 import TermsOfUse from './pages/TermsOfUse';
 import ResponsibleDisclosure from './pages/ResponsibleDisclosure';
 import FAQ from './pages/FAQ';
+import About from './pages/About';
+import FloatingButton from './components/FloatingButton';
+import { ThemeProvider, useTheme } from './context/ThemeContext';
 
-function App() {
+const AppContent = () => {
+  const { themeConfig } = useTheme();
+  
   return (
-    <>
+    <div className={`min-h-screen ${themeConfig.background} ${themeConfig.text} transition-colors duration-300`}>
       <Navbar />
-      <div className='pt-20'>
+      <div className='pt-16'>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/products" element={<Products />} />
@@ -33,10 +38,20 @@ function App() {
           <Route path="/terms-of-use" element={<TermsOfUse />} />
           <Route path="/disclosure" element={<ResponsibleDisclosure />} />
           <Route path="/faq" element={<FAQ />} />
+          <Route path='/about' element={<About/>} />
         </Routes>
       </div>
       <Footer />
-    </>
+      <FloatingButton />
+    </div>
+  );
+};
+
+function App() {
+  return (
+    <ThemeProvider>
+      <AppContent />
+    </ThemeProvider>
   )
 }
 

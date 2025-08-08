@@ -1,71 +1,21 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { ChevronRight, ArrowRight, Zap, Shield, Search, Cloud, Bot, FileText, Lock, Cpu, Scan, Workflow, Fingerprint, Key, Clock, Activity, Database, ShieldCheck, Network, Check, Table, Folder, Tag, Trash2, LayoutDashboard, Send, Users, PenTool, BarChart2, Smartphone, Palette, Server, GitBranch, ChevronDown, X, ChevronUp, List, Settings, Wrench, ClipboardList, BookOpen, FileDigit, Layers } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import {
+  ChevronRight, ArrowRight, Settings, Wrench, ClipboardList, FileDigit, 
+  Layers, Zap, Users, ShieldCheck, Database, Clock, Server, 
+  Search, Workflow, Activity, Shield, BarChart2, Palette, 
+  GitBranch, Check, Send, PenTool, Shield as ShieldIcon,
+  Scan,
+  FileText,
+  Tag
+} from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import Logo from '../components/common/Logo';
 import TabsNavigation from '../components/common/TabNavigation';
-
-// Reusing components from Features page
-const FloatingElement = ({ children, delay = 0, amplitude = 20 }) => {
-  const [offset, setOffset] = useState(0);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setOffset(prev => prev + 0.02);
-    }, 16);
-    return () => clearInterval(interval);
-  }, []);
-
-  return (
-    <div
-      className="transition-transform duration-100"
-      style={{
-        transform: `translateY(${Math.sin(offset + delay) * amplitude}px) rotateY(${Math.sin(offset * 0.5) * 10}deg)`
-      }}
-    >
-      {children}
-    </div>
-  );
-};
-
-const div = ({ children, className = "", index = 0 }) => {
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-  const [isHovered, setIsHovered] = useState(false);
-  const cardRef = useRef(null);
-
-  const handleMouseMove = (e) => {
-    if (!cardRef.current) return;
-    const rect = cardRef.current.getBoundingClientRect();
-    const x = (e.clientX - rect.left - rect.width / 2) / rect.width;
-    const y = (e.clientY - rect.top - rect.height / 2) / rect.height;
-    setMousePos({ x: x * 20, y: y * -20 });
-  };
-
-  return (
-    <div
-      ref={cardRef}
-      className={`relative perspective-1000 ${className}`}
-      onMouseMove={handleMouseMove}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => {
-        setIsHovered(false);
-        setMousePos({ x: 0, y: 0 });
-      }}
-      style={{
-        transform: `rotateX(${mousePos.y}deg) rotateY(${mousePos.x}deg)`,
-        transition: isHovered ? 'none' : 'transform 0.5s ease-out',
-        transformStyle: 'preserve-3d'
-      }}
-    >
-      <div className="relative transform-gpu" style={{ transform: 'translateZ(50px)' }}>
-        {children}
-      </div>
-    </div>
-  );
-};
+import { useTheme } from '../context/ThemeContext';
 
 // Services Hero Section
 const ServicesHero = () => {
+  const { themeConfig } = useTheme();
   const [activeIndex, setActiveIndex] = useState(0);
   const services = [
     "Implementation Services",
@@ -82,158 +32,82 @@ const ServicesHero = () => {
   }, []);
 
   return (
-    <section className="relative py-20 md:min-h-screen flex items-center overflow-hidden bg-gradient-to-br from-[#DBE4C9] via-[#E9E9E9] to-[#FFFFF0]">
-      {/* Dynamic Grid Background - Reduced on mobile */}
-      <div className="absolute inset-0 opacity-20">
-        <div className="grid grid-cols-6 md:grid-cols-12 grid-rows-12 h-full w-full">
-          {[...Array(72)].map((_, i) => (
-            <motion.div
-              key={i}
-              className="border border-white/10"
-              initial={{ opacity: 0 }}
-              animate={{
-                opacity: [0, 0.3, 0],
-                transition: {
-                  duration: 4 + Math.random() * 3,
-                  repeat: Infinity,
-                  delay: Math.random() * 2
-                }
-              }}
-            />
-          ))}
-        </div>
-      </div>
-
-      {/* Floating Orbs - Smaller on mobile */}
-      <div className="absolute inset-0 overflow-hidden">
-        {[15, 25, 35, 45].map((size, i) => (
-          <motion.div
-            key={i}
-            className="absolute rounded-full bg-gradient-to-br from-[#FDF5AA] to-[#58A0C8]"
-            style={{
-              width: `${size}px`,
-              height: `${size}px`,
-              left: `${5 + i * 20}%`,
-              top: `${15 + i * 10}%`,
-              filter: 'blur(10px)',
-              opacity: 0.3
-            }}
-            animate={{
-              y: [0, 20, 0],
-              x: [0, 15, 0],
-              transition: {
-                duration: 10 + i * 2,
-                repeat: Infinity,
-                ease: "easeInOut"
-              }
-            }}
-          />
-        ))}
-      </div>
-
-      <div className="container mx-auto px-4 sm:px-6 relative z-10">
-        <div className="flex flex-col lg:flex-row items-center gap-8 md:gap-16">
-          {/* Animated Services Showcase - Made responsive */}
-          <div className="w-full lg:w-1/2 order-2 lg:order-1 mt-10 lg:mt-0">
-            <motion.div
-              className="relative h-64 sm:h-80 md:h-96 w-full rounded-2xl md:rounded-3xl overflow-hidden border border-white/20 shadow-xl md:shadow-2xl"
-            >
-              <div className="absolute inset-0 bg-gradient-to-br from-[#113F67]/30 to-[#58A0C8]/30 backdrop-blur-sm md:backdrop-blur-md">
-                {services.map((service, idx) => (
-                  <motion.div
-                    key={service}
-                    className="absolute inset-0 flex items-center justify-center p-6 sm:p-12"
-                    initial={{ opacity: 0 }}
-                    animate={{
-                      opacity: activeIndex === idx ? 1 : 0,
-                      scale: activeIndex === idx ? 1 : 0.8
-                    }}
-                    transition={{ duration: 0.8 }}
-                  >
-                    <div className="text-center">
-                      <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-4 sm:mb-6 bg-gradient-to-br from-[#FDF5AA] to-[#58A0C8] rounded-xl md:rounded-2xl flex items-center justify-center shadow-lg">
-                        {[
-                          <Settings size={24} className="text-[#113F67]" />,
-                          <Wrench size={24} className="text-[#113F67]" />,
-                          <ClipboardList size={24} className="text-[#113F67]" />,
-                          <FileDigit size={24} className="text-[#113F67]" />
-                        ][idx]}
-                      </div>
-                      <h3 className="text-xl sm:text-2xl font-bold text-white mb-2 sm:mb-3">{service}</h3>
-                      <p className="text-sm sm:text-base text-white/80">
-                        {[
-                          "Quick start with expert-led deployment and configuration",
-                          "Let us manage, monitor and optimize your environment",
-                          "Re-engineer processes for higher efficiency",
-                          "Convert legacy paper records into digital files"
-                        ][idx]}
-                      </p>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </motion.div>
-          </div>
-
-          {/* Content - Made responsive */}
-          <div className="w-full lg:w-1/2 space-y-6 md:space-y-8 order-1 lg:order-2">
-            <motion.div
-              initial={{ opacity: 0, x: -50 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-            >
+    <section className={`relative flex items-center overflow-hidden min-h-full pt-20 pb-16 lg:pt-16 lg:pb-20 ${themeConfig.background}`}>
+      <div className="container mx-auto px-4 sm:px-24 relative z-10">
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+          {/* Content */}
+          <div className="space-y-6 md:space-y-8 order-2 lg:order-1">
+            <div>
               <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6 leading-tight">
-                <span className="text-[#113F67]">Professional Services </span>
-                <span className="bg-gradient-to-r from-[#113F67] via-[#113F67] to-[#113F67] bg-clip-text text-transparent">
-                  Designed Around You
+                <span className={themeConfig.textPrimary}>Professional </span>
+                <span className={`bg-gradient-to-r ${themeConfig.gradientText} bg-clip-text`}>
+                  Services
+                </span>
+                <br />
+                <span className={themeConfig.textPrimary}>Designed for Your</span>
+                <br />
+                <span className={`bg-gradient-to-r ${themeConfig.gradientTextSecondary} bg-clip-text`}>
+                  Business Needs
                 </span>
               </h1>
-              <p className="text-lg sm:text-xl text-[#113F67] mb-4 sm:mb-6">
-                At Databitze, our services don't just support your digital transformation — they accelerate it. From implementation to integration, we're your partner every step of the way.
+            </div>
+
+            <div>
+              <p className={`text-md sm:text-lg lg:text-xl mb-4 ${themeConfig.textPrimary}/80 font-medium leading-relaxed`}>
+                Our services don't just support your digital transformation — they accelerate it.
               </p>
-            </motion.div>
+              <p className={`text-sm sm:text-md ${themeConfig.textPrimary}/70 leading-relaxed`}>
+                From implementation to integration, we're your partner every step of the way with
+                expert services tailored to your unique requirements.
+              </p>
+            </div>
 
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.3, duration: 0.8 }}
-              className="space-y-3 md:space-y-4"
-            >
-              {[
-                "Tailored implementation plans",
-                "24/7 monitoring and support",
-                "Process optimization consulting",
-                "Legacy document digitization",
-                "Custom integration development"
-              ].map((feature, i) => (
-                <motion.div
-                  key={feature}
-                  className="flex items-center gap-3"
-                  whileHover={{ x: 5 }}
-                >
-                  <div className="w-6 h-6 sm:w-8 sm:h-8 bg-[#B3E5FC] rounded-full flex items-center justify-center shrink-0">
-                    <Check className="text-[#113F67]" size={14} />
+            <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
+              <Link to="/contact">
+                <button className={`group relative px-5 sm:px-6 py-2 sm:py-3 ${themeConfig.button.primary} rounded-lg sm:rounded-xl font-bold text-sm sm:text-md shadow-lg sm:shadow-xl overflow-hidden transform hover:scale-105 transition-all duration-300`}>
+                  <div className={`absolute inset-0 ${themeConfig.button.hover} transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left`}></div>
+                  <div className="relative flex items-center gap-2 sm:gap-3">
+                    <span>Book Consultation</span>
                   </div>
-                  <span className="text-sm sm:text-base text-[#113F67]/80">{feature}</span>
-                </motion.div>
-              ))}
-            </motion.div>
+                </button>
+              </Link>
+            </div>
+          </div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.6, duration: 0.5 }}
-              className="flex flex-wrap gap-3 sm:gap-4 pt-4 sm:pt-6"
-            >
-              <button className="px-6 py-2 sm:px-8 sm:py-3 bg-gradient-to-r from-[#113F67] to-[#34699A] text-white rounded-lg sm:rounded-xl font-bold hover:shadow-lg hover:shadow-[#113F67]/30 sm:hover:shadow-[#113F67]/50 transition-all duration-300 flex items-center gap-2 text-sm sm:text-base">
-                <span>Explore Services</span>
-                <ArrowRight size={16} />
-              </button>
-              <button className="px-6 py-2 sm:px-8 sm:py-3 bg-transparent border border-[#B3E5FC] text-[#0D47A1] rounded-lg sm:rounded-xl font-bold hover:bg-[#B3E5FC]/10 transition-all duration-300 flex items-center gap-2 text-sm sm:text-base">
-                <span>Book Consultation</span>
-                <Table size={16} />
-              </button>
-            </motion.div>
+          {/* Image Section */}
+          <div className="relative order-1 lg:order-2 mb-8 lg:mb-0">
+            <div className="relative max-w-md sm:max-w-lg mx-auto">
+              <div className={`relative h-64 sm:h-80 md:h-96 w-full rounded-lg sm:rounded-xl overflow-hidden border-2 ${themeConfig.border} shadow-lg sm:shadow-xl`}>
+                <div className={`absolute inset-0 bg-gradient-to-br ${themeConfig.heroOverlayGradient} backdrop-blur-sm`}>
+                  {services.map((service, idx) => (
+                    <div
+                      key={service}
+                      className={`absolute inset-0 flex items-center justify-center p-6 sm:p-8 transition-opacity duration-500 ${activeIndex === idx ? 'opacity-100' : 'opacity-0'}`}
+                    >
+                      <div className="text-center">
+                        <div className={`w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-4 sm:mb-6 ${themeConfig.featureIconBackground} rounded-lg sm:rounded-xl flex items-center justify-center shadow-lg`}>
+                          {[
+                            <Settings size={24} className={themeConfig.featureIconColor} />,
+                            <Wrench size={24} className={themeConfig.featureIconColor} />,
+                            <ClipboardList size={24} className={themeConfig.featureIconColor} />,
+                            <FileDigit size={24} className={themeConfig.featureIconColor} />
+                          ][idx]}
+                        </div>
+                        <h3 className={`text-xl sm:text-2xl font-bold ${themeConfig.textInverted} mb-2 sm:mb-3`}>{service}</h3>
+                        <p className={`text-sm sm:text-base ${themeConfig.textInvertedSecondary}`}>
+                          {[
+                            "Quick start with expert-led deployment and configuration",
+                            "Let us manage, monitor and optimize your environment",
+                            "Re-engineer processes for higher efficiency",
+                            "Convert legacy paper records into digital files"
+                          ][idx]}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -243,6 +117,7 @@ const ServicesHero = () => {
 
 // Services Tabs Section
 const ServicesTabs = () => {
+  const { themeConfig } = useTheme();
   const [activeTab, setActiveTab] = useState('implementation');
 
   const tabs = [
@@ -417,14 +292,14 @@ const ServicesTabs = () => {
   };
 
   return (
-    <section className="py-20 bg-gradient-to-b from-white to-[#FDF5AA]/10">
-      <div className="container mx-auto px-6">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl lg:text-5xl font-bold mb-6 bg-gradient-to-r from-[#113F67] via-[#34699A] to-[#58A0C8] bg-clip-text text-transparent pb-2">
+    <section className={`relative py-16 ${themeConfig.sectionBackground} overflow-hidden`}>
+      <div className="container mx-auto px-4 sm:px-6 relative z-10">
+        <div className="text-center mb-12">
+          <h2 className={`text-3xl lg:text-4xl font-bold mb-4 ${themeConfig.gradientText}`}>
             Comprehensive Service Offerings
           </h2>
-          <div className="w-24 h-1 bg-gradient-to-r from-[#58A0C8] to-[#34699A] mx-auto rounded-full mb-6"></div>
-          <p className="text-xl text-[#113F67]/80 max-w-3xl mx-auto">
+          <div className={`w-20 h-1 ${themeConfig.gradientDivider} mx-auto rounded-full mb-4`}></div>
+          <p className={`text-lg ${themeConfig.textPrimary}/80 max-w-3xl mx-auto`}>
             End-to-end services to support your digital transformation journey at every stage.
           </p>
         </div>
@@ -434,56 +309,51 @@ const ServicesTabs = () => {
           tabs={tabs}
           activeTab={activeTab}
           setActiveTab={setActiveTab}
-          activeTabColor="from-[#34699A] to-[#113F67]"
-          inactiveTabColor="text-[#113F67] hover:bg-[#113F67]/10"
-          iconColor="text-[#34699A]"
-          activeIconColor="text-white"
-          gradientFadeColor="from-[#113F67]/5"
+          activeTabColor={themeConfig.tabActiveBackground}
+          inactiveTabColor={themeConfig.tabInactiveBackground}
+          iconColor={themeConfig.tabInactiveIcon}
+          activeIconColor={themeConfig.tabActiveIcon}
+          gradientFadeColor={themeConfig.tabGradientFade}
         />
 
         {/* Tab Content */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
           {services[activeTab].map((service, index) => (
-            <div key={index} index={index} className="h-full">
-              <div className="group h-full p-6 bg-gradient-to-br from-white to-[#FDF5AA]/5 rounded-2xl shadow-xl border border-white/20 hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2">
-                <div className={`w-12 h-12 bg-gradient-to-r ${service.color} rounded-xl flex items-center justify-center mb-4 shadow-lg group-hover:scale-110 transition-transform duration-300`}>
+            <motion.div 
+              key={index} 
+              className="h-full"
+              whileHover={{ y: -5 }}
+              transition={{ duration: 0.2 }}
+            >
+              <div className={`h-full p-6 ${themeConfig.featureCardBackground} rounded-xl shadow-lg border ${themeConfig.border} hover:shadow-xl transition-shadow duration-300`}>
+                <div className={`w-12 h-12 bg-gradient-to-r ${service.color} rounded-lg flex items-center justify-center mb-4`}>
                   <service.icon size={20} className="text-white" />
                 </div>
-                <h3 className="text-lg font-bold text-[#113F67] group-hover:text-[#34699A] transition-colors duration-300 mb-2">
+                <h3 className={`text-lg font-bold ${themeConfig.textPrimary} mb-2`}>
                   {service.title}
                 </h3>
-                <p className="text-sm text-[#113F67]/70 leading-relaxed">
+                <p className={`text-sm ${themeConfig.textSecondary} leading-relaxed`}>
                   {service.description}
                 </p>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
 
         {/* CTA */}
-        <div className="mt-16 max-w-4xl mx-auto">
-          <div>
-            <div className="bg-gradient-to-r from-[#113F67] to-[#34699A] rounded-3xl p-8 text-center text-white shadow-2xl">
-              <h3 className="text-2xl font-bold mb-4">Need Expert Help?</h3>
-              <p className="mb-6 text-white/90 max-w-2xl mx-auto">
-                Let's build something impactful together. Our team of experts is ready to help you achieve your digital transformation goals.
-              </p>
-              <div className="flex flex-wrap justify-center gap-4">
-                <button className="group relative px-8 py-3 bg-gradient-to-r from-[#FDF5AA] to-white text-[#113F67] rounded-2xl font-bold text-lg shadow-2xl overflow-hidden transform hover:scale-105 transition-all duration-300">
-                  <div className="absolute inset-0 bg-white/80 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
-                  <div className="relative flex items-center justify-center gap-3">
-                    <span>Book an Appointment</span>
-                    <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform duration-300" />
-                  </div>
-                </button>
-                {/* <button className="group relative px-8 py-3 bg-transparent border-2 border-white text-white rounded-2xl font-bold text-lg overflow-hidden transform hover:scale-105 transition-all duration-300">
-                  <div className="absolute inset-0 bg-white/10 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
-                  <div className="relative flex items-center justify-center gap-3">
-                    <span>Contact Our Team</span>
-                    <Send size={20} className="group-hover:translate-x-1 transition-transform duration-300" />
-                  </div>
-                </button> */}
-              </div>
+        <div className="mt-12 max-w-3xl mx-auto">
+          <div className={`bg-gradient-to-r ${themeConfig.ctaGradient} rounded-xl p-6 text-center text-white shadow-lg`}>
+            <h3 className="text-xl font-bold mb-2">Need Expert Help?</h3>
+            <p className="mb-4 text-white/90 text-sm">
+              Our team would love to show you how our services can transform your business.
+            </p>
+            <div className="flex flex-wrap justify-center gap-4">
+              <Link to="/contact" className={`px-6 py-2 ${themeConfig.button.secondary} rounded-lg font-bold text-sm shadow-md hover:shadow-lg transition-all duration-300`}>
+                Request Demo
+              </Link>
+              <Link to="/contact" className={`px-6 py-2 bg-transparent border-2 ${themeConfig.button.outline} rounded-lg font-bold text-sm hover:${themeConfig.button.outlineHover} transition-all duration-300`}>
+                Contact Sales
+              </Link>
             </div>
           </div>
         </div>
@@ -494,6 +364,7 @@ const ServicesTabs = () => {
 
 // Services Process Section
 const ServicesProcess = () => {
+  const { themeConfig } = useTheme();
   const steps = [
     {
       title: "Discovery",
@@ -528,21 +399,21 @@ const ServicesProcess = () => {
   ];
 
   return (
-    <section className="py-20 bg-gradient-to-b from-[#113F67]/5 to-[#113F67]/20">
-      <div className="container mx-auto px-6">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl lg:text-5xl font-bold mb-6 bg-gradient-to-r from-[#113F67] via-[#34699A] to-[#58A0C8] bg-clip-text text-transparent pb-2">
+    <section className={`relative py-16 ${themeConfig.alternateSectionBackground} overflow-hidden`}>
+      <div className="container mx-auto px-4 sm:px-6 relative z-10">
+        <div className="text-center mb-12">
+          <h2 className={`text-3xl lg:text-4xl font-bold mb-4 ${themeConfig.gradientText}`}>
             Our Proven Service Methodology
           </h2>
-          <div className="w-24 h-1 bg-gradient-to-r from-[#58A0C8] to-[#34699A] mx-auto rounded-full mb-6"></div>
-          <p className="text-xl text-[#113F67]/80 max-w-3xl mx-auto">
+          <div className={`w-20 h-1 ${themeConfig.gradientDivider} mx-auto rounded-full mb-4`}></div>
+          <p className={`text-lg ${themeConfig.textPrimary}/80 max-w-3xl mx-auto`}>
             A structured approach that ensures success at every stage of your digital transformation journey.
           </p>
         </div>
 
         <div className="relative">
           {/* Timeline line */}
-          <div className="hidden lg:block absolute left-1/2 top-0 h-full w-1 bg-gradient-to-b from-[#58A0C8] to-[#113F67] transform -translate-x-1/2"></div>
+          <div className={`hidden lg:block absolute left-1/2 top-0 h-full w-1 ${themeConfig.timelineLine} transform -translate-x-1/2`}></div>
 
           {/* Steps */}
           <div className="space-y-12 lg:space-y-0">
@@ -559,14 +430,14 @@ const ServicesProcess = () => {
                   <>
                     <div className="lg:w-5/12 lg:pr-12 mb-8 lg:mb-0">
                       <div>
-                        <div className="p-6 bg-white rounded-2xl shadow-xl border border-white/20">
-                          <div className={`w-12 h-12 bg-gradient-to-r ${step.color} rounded-xl flex items-center justify-center mb-4 shadow-lg`}>
+                        <div className={`p-6 ${themeConfig.cardBackground} rounded-xl shadow-lg border ${themeConfig.border}`}>
+                          <div className={`w-12 h-12 bg-gradient-to-r ${step.color} rounded-lg flex items-center justify-center mb-4`}>
                             <step.icon size={20} className="text-white" />
                           </div>
-                          <h3 className="text-xl font-bold text-[#113F67] mb-2">
+                          <h3 className={`text-lg font-bold ${themeConfig.textPrimary} mb-2`}>
                             {step.title}
                           </h3>
-                          <p className="text-[#113F67]/70">
+                          <p className={`text-sm ${themeConfig.textSecondary}`}>
                             {step.description}
                           </p>
                         </div>
@@ -574,8 +445,8 @@ const ServicesProcess = () => {
                     </div>
 
                     {/* Center dot */}
-                    <div className="hidden lg:flex absolute left-1/2 transform -translate-x-1/2 w-8 h-8 bg-gradient-to-r from-[#113F67] to-[#58A0C8] rounded-full items-center justify-center shadow-lg z-10">
-                      <div className="w-5 h-5 bg-white rounded-full"></div>
+                    <div className={`hidden lg:flex absolute left-1/2 transform -translate-x-1/2 w-8 h-8 ${themeConfig.timelineDot} rounded-full items-center justify-center shadow-lg z-10`}>
+                      <div className={`w-5 h-5 ${themeConfig.timelineDotCenter} rounded-full`}></div>
                     </div>
 
                     {/* Right empty space */}
@@ -587,21 +458,21 @@ const ServicesProcess = () => {
                     <div className="lg:w-5/12"></div>
 
                     {/* Center dot */}
-                    <div className="hidden lg:flex absolute left-1/2 transform -translate-x-1/2 w-8 h-8 bg-gradient-to-r from-[#113F67] to-[#58A0C8] rounded-full items-center justify-center shadow-lg z-10">
-                      <div className="w-5 h-5 bg-white rounded-full"></div>
+                    <div className={`hidden lg:flex absolute left-1/2 transform -translate-x-1/2 w-8 h-8 ${themeConfig.timelineDot} rounded-full items-center justify-center shadow-lg z-10`}>
+                      <div className={`w-5 h-5 ${themeConfig.timelineDotCenter} rounded-full`}></div>
                     </div>
 
                     {/* Right side (odd) */}
                     <div className="lg:w-5/12 lg:pl-12">
                       <div>
-                        <div className="p-6 bg-white rounded-2xl shadow-xl border border-white/20">
-                          <div className={`w-12 h-12 bg-gradient-to-r ${step.color} rounded-xl flex items-center justify-center mb-4 shadow-lg`}>
+                        <div className={`p-6 ${themeConfig.cardBackground} rounded-xl shadow-lg border ${themeConfig.border}`}>
+                          <div className={`w-12 h-12 bg-gradient-to-r ${step.color} rounded-lg flex items-center justify-center mb-4`}>
                             <step.icon size={20} className="text-white" />
                           </div>
-                          <h3 className="text-xl font-bold text-[#113F67] mb-2">
+                          <h3 className={`text-lg font-bold ${themeConfig.textPrimary} mb-2`}>
                             {step.title}
                           </h3>
-                          <p className="text-[#113F67]/70">
+                          <p className={`text-sm ${themeConfig.textSecondary}`}>
                             {step.description}
                           </p>
                         </div>
@@ -613,27 +484,6 @@ const ServicesProcess = () => {
             ))}
           </div>
         </div>
-
-        {/* Mobile steps */}
-        {/* <div className="lg:hidden mt-12 space-y-8">
-          {steps.map((step, index) => (
-            <motion.div
-              key={index}
-              className="flex items-start gap-4"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1 }}
-            >
-              <div className={`w-10 h-10 bg-gradient-to-r ${step.color} rounded-lg flex items-center justify-center mt-1 flex-shrink-0`}>
-                <step.icon size={16} className="text-white" />
-              </div>
-              <div>
-                <h3 className="text-lg font-bold text-[#113F67]">{step.title}</h3>
-                <p className="text-[#113F67]/70 text-sm">{step.description}</p>
-              </div>
-            </motion.div>
-          ))}
-        </div> */}
       </div>
     </section>
   );
