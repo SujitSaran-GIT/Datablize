@@ -1,6 +1,6 @@
 import './App.css'
 import Navbar from './components/Navbar'
-import Home from './pages/Home';
+import Home from './pages/Home/Home';
 import Products from './pages/Products';
 import Features from './pages/Features';
 import Services from './pages/Services';

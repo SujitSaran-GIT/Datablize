@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowRight, BookOpen, ChevronRight, Download, FileAxis3d, FileBadge, FileBarChart, FileBox, FileCheck, FileClock, FileCode, FileCog, FileDigit, FileHeart, FileInput, FileKey, FileMinus, FileOutput, FilePen, FileQuestion, FileScan, FileSearch, FileSignature, FileSpreadsheet, FileStack, FileText, FileUp, FileVideo, Film, Headphones, Play, Youtube } from 'lucide-react';
+import { ArrowRight, BookOpen, ChevronRight, Download, FileAxis3d, FileBadge, FileBarChart, FileBox, FileCheck, FileClock, FileCode, FileCog, FileDigit, FileHeart, FileInput, FileKey, FileMinus, FileOutput, FilePen, FileQuestion, FileScan, FileSearch, FileSignature, FileSpreadsheet, FileStack, FileText, FileUp, FileVideo, Film, Headphones, Play, Youtube, ExternalLink, AlertCircle } from 'lucide-react';
 
-// TabsNavigation Component (aligned with Features and UseCase)
+// TabsNavigation Component
 const TabsNavigation = ({ tabs, activeTab, setActiveTab }) => {
   return (
     <div className="flex flex-wrap justify-center gap-2 mb-8">
@@ -182,7 +182,7 @@ const ResourcesHero = () => {
 
 // Resources Tabs Section
 const ResourcesTabs = () => {
-  const [activeTab, setActiveTab] = useState('whitepapers');
+  const [activeTab, setActiveTab] = useState('casestudies');
 
   const tabs = [
     { id: 'whitepapers', label: 'Whitepapers', icon: FileText },
@@ -191,6 +191,44 @@ const ResourcesTabs = () => {
     { id: 'productdocs', label: 'Product Docs', icon: FileCode },
     { id: 'faqs', label: 'FAQs', icon: FileQuestion },
     { id: 'videos', label: 'Videos', icon: Play }
+  ];
+
+  // File paths for local PDFs (relative to the public folder)
+  const whitepaperFiles = [
+    '/documents/whitepaper/Whitepaper  Document Intelligence Processing.pdf',
+    '/documents/whitepaper/Whitepaper DPDPA 2023 Compliance Strategies.pdf',
+    '/documents/whitepaper/Whitepaper HIPAA, GDPR & DPDPA Unified Approach.pdf',
+    '/documents/whitepaper/Whitepaper IDP Cost Reduction Study.pdf',
+    '/documents/whitepaper/Whitepaper Zero Paper Offices.pdf'
+  ];
+
+  const casestudyFiles = [
+    '/documents/casestudy/Case Study   Record Management.pdf',
+    '/documents/casestudy/Case Study Automated Invoice Processing.pdf',
+    '/documents/casestudy/Case Study Datablize Analytics Solution — Secure Document Storage.pdf',
+    '/documents/casestudy/Case Study Digital Archive Migration.pdf',
+    '/documents/casestudy/Case Study EHR Digitization for Hospitals.pdf',
+    '/documents/casestudy/Case Study G2C Automation Platform.pdf',
+    '/documents/casestudy/Case Study Health Insurance Claims Automation.pdf',
+    '/documents/casestudy/Case Study KYC & AML Automation.pdf'
+  ];
+
+  const guideFiles = [
+    '/documents/guide/Guide  Digitization Strategy Guide 2025.pdf',
+    "/documents/guide/Guide  DMS Buyer's Guide 2025.pdf",
+    '/documents/guide/Guide  Implementation Checklist Step-by-Step Guide.pdf',
+    '/documents/guide/Guide  Workflow Automation Playbook 2025.pdf'
+  ];
+
+  const productdocsFiles = [
+    '/documents/products/Transforming Document Processing.pdf',
+    '/documents/products/Datablize Analytics Product Brochure.pdf'
+  ];
+
+  const faqsFiles = [
+    '/documents/faqs/General FAQs Datablize Analytics.pdf',
+    '/documents/faqs/Implementation FAQs Datablize Analytics Deployment and Configuration.pdf',
+    '/documents/faqs/Security FAQs Compliance and Data Protection.pdf'
   ];
 
   const resources = {
@@ -202,7 +240,7 @@ const ResourcesTabs = () => {
         color: "from-primary-blue to-primary-orange",
         type: "PDF",
         size: "2.4 MB",
-        date: "May 2025"
+        file: whitepaperFiles[0]
       },
       {
         title: "DPDPA 2023 Compliance Strategies",
@@ -211,81 +249,109 @@ const ResourcesTabs = () => {
         color: "from-primary-blue to-primary-orange",
         type: "PDF",
         size: "1.8 MB",
-        date: "March 2025"
+        file: whitepaperFiles[1]
+      },
+      {
+        title: "HIPAA, GDPR & DPDPA",
+        description: "Strategies for multi-regulation compliance using Datablize solutions",
+        icon: FileKey,
+        color: "from-primary-blue to-primary-orange",
+        type: "PDF",
+        size: "2.1 MB",
+        file: whitepaperFiles[2]
+      },
+      {
+        title: "Intelligent Document Processing (IDP)",
+        description: "A deep dive into cost-saving benefits of IDP technologies",
+        icon: FileCog,
+        color: "from-primary-blue to-primary-orange",
+        type: "PDF",
+        size: "2.3 MB",
+        file: whitepaperFiles[3]
       },
       {
         title: "Zero Paper Offices",
-        description: "How government and BFSI sectors are achieving paperless operations",
-        icon: FileMinus,
+        description: "Exploring the shift to paperless operations in government and banking sectors",
+        icon: FileText,
         color: "from-primary-blue to-primary-orange",
         type: "PDF",
-        size: "3.1 MB",
-        date: "January 2025"
+        size: "2.0 MB",
+        file: whitepaperFiles[4]
       },
-      {
-        title: "HIPAA, GDPR & DPDPA Unified Approach",
-        description: "Meeting multiple compliance requirements with a single framework",
-        icon: FileCheck,
-        color: "from-primary-blue to-primary-orange",
-        type: "PDF",
-        size: "2.7 MB",
-        date: "February 2025"
-      },
-      {
-        title: "IDP Cost Reduction Study",
-        description: "How Intelligent Document Processing reduces operational costs by 50%",
-        icon: FileSpreadsheet,
-        color: "from-primary-blue to-primary-orange",
-        type: "PDF",
-        size: "1.5 MB",
-        date: "April 2025"
-      }
     ],
     casestudies: [
       {
-        title: "G2C Service Automation",
-        description: "State IT Department's citizen service transformation with our platform",
+        title: "Intelligent Record Management",
+        description: "Streamlining Document Management and Workflow Automation through AI-Powered Solutions",
         icon: FileBadge,
         color: "from-primary-blue to-primary-orange",
         type: "PDF",
         size: "4.2 MB",
-        date: "December 2024"
+        file: casestudyFiles[0]
       },
       {
-        title: "Health Insurance Claims Automation",
-        description: "How a leading provider reduced claims processing time by 70%",
+        title: "Automated Invoice Processing",
+        description: "Transforming Financial Operations with Datablize Analytics's Automated Invoice Processing",
         icon: FileHeart,
         color: "from-primary-blue to-primary-orange",
         type: "PDF",
         size: "3.8 MB",
-        date: "November 2024"
+        file: casestudyFiles[1]
       },
       {
-        title: "Digital Archive Migration",
-        description: "National PSU's journey migrating 10M+ documents to our DMS",
+        title: "Secure Document Storage",
+        description: "Enhancing Compliance and Access Control through Advanced Encryption and Policy Management",
         icon: FileStack,
         color: "from-primary-blue to-primary-orange",
         type: "PDF",
         size: "5.1 MB",
-        date: "October 2024"
+        date: "October 2024",
+        file: casestudyFiles[2]
       },
       {
-        title: "KYC & AML Automation",
-        description: "Financial institution's compliance transformation case study",
+        title: "Transforming Digital Archives",
+        description: "A Case Study on Seamless Migration and Enhanced Efficiency with Datablize DMS",
         icon: FileSignature,
         color: "from-primary-blue to-primary-orange",
         type: "PDF",
         size: "2.9 MB",
-        date: "September 2024"
+        file: casestudyFiles[3]
       },
       {
         title: "EHR Digitization for Hospitals",
-        description: "HIPAA-compliant electronic health records implementation",
+        description: "Achieving HIPAA Compliance and Operational Efficiency with AI-Powered EHR Digitization",
         icon: FileScan,
         color: "from-primary-blue to-primary-orange",
         type: "PDF",
         size: "3.5 MB",
-        date: "August 2024"
+        file: casestudyFiles[4]
+      },
+      {
+        title: "G2C Document Automation",
+        description: "State IT Department's Citizen Service Transformation with Datablize Analytics' G2C Automation Platform",
+        icon: FileInput,
+        color: "from-primary-blue to-primary-orange",
+        type: "PDF",
+        size: "4.7 MB",
+        file: casestudyFiles[5]
+      },
+      {
+        title: "Health Insurance Claims Automation",
+        description: "Transforming Claims Processing with AI-Powered Automation",
+        icon: FileKey,
+        color: "from-primary-blue to-primary-orange",
+        type: "PDF",
+        size: "3.2 MB",
+        file: casestudyFiles[6]
+      },
+      {
+        title: "KYC & AML Automation",
+        description: "Financial Institution's Compliance Transformation with Datablize Analytics",
+        icon: FileText,
+        color: "from-primary-blue to-primary-orange",
+        type: "PDF",
+        size: "5.3 MB",
+        file: casestudyFiles[7]
       }
     ],
     guides: [
@@ -296,7 +362,7 @@ const ResourcesTabs = () => {
         color: "from-primary-blue to-primary-orange",
         type: "PDF",
         size: "6.2 MB",
-        date: "July 2025"
+        file: guideFiles[0]
       },
       {
         title: "Implementation Checklist",
@@ -305,7 +371,7 @@ const ResourcesTabs = () => {
         color: "from-primary-blue to-primary-orange",
         type: "PDF",
         size: "1.2 MB",
-        date: "June 2025"
+        file: guideFiles[1]
       },
       {
         title: "Workflow Automation Playbook",
@@ -314,7 +380,7 @@ const ResourcesTabs = () => {
         color: "from-primary-blue to-primary-orange",
         type: "PDF",
         size: "3.4 MB",
-        date: "May 2025"
+        file: guideFiles[2]
       },
       {
         title: "DPDPA Compliance Template",
@@ -323,16 +389,7 @@ const ResourcesTabs = () => {
         color: "from-primary-blue to-primary-orange",
         type: "DOCX",
         size: "0.8 MB",
-        date: "April 2025"
-      },
-      {
-        title: "Digitization Strategy Guide",
-        description: "From scanner to structured data - complete roadmap",
-        icon: FileDigit,
-        color: "from-primary-blue to-primary-orange",
-        type: "PDF",
-        size: "2.9 MB",
-        date: "March 2025"
+        file: guideFiles[3]
       }
     ],
     productdocs: [
@@ -343,7 +400,7 @@ const ResourcesTabs = () => {
         color: "from-primary-blue to-primary-orange",
         type: "PDF",
         size: "8.4 MB",
-        date: "June 2025"
+        file: productdocsFiles[0]
       },
       {
         title: "DMS Handbook",
@@ -352,34 +409,7 @@ const ResourcesTabs = () => {
         color: "from-primary-blue to-primary-orange",
         type: "PDF",
         size: "12.1 MB",
-        date: "May 2025"
-      },
-      {
-        title: "OnPrem Deployment Guide",
-        description: "Detailed instructions for on-premises installation",
-        icon: FileBox,
-        color: "from-primary-blue to-primary-orange",
-        type: "PDF",
-        size: "5.7 MB",
-        date: "April 2025"
-      },
-      {
-        title: "Hardware Sizing Guide",
-        description: "Specifications for optimal performance at scale",
-        icon: FileCog,
-        color: "from-primary-blue to-primary-orange",
-        type: "PDF",
-        size: "2.3 MB",
-        date: "March 2025"
-      },
-      {
-        title: "Integration Guide",
-        description: "Connecting with ERP, CRM and legacy systems",
-        icon: FileAxis3d,
-        color: "from-primary-blue to-primary-orange",
-        type: "PDF",
-        size: "4.8 MB",
-        date: "February 2025"
+        file: productdocsFiles[1]
       }
     ],
     faqs: [
@@ -390,7 +420,7 @@ const ResourcesTabs = () => {
         color: "from-primary-blue to-primary-orange",
         type: "PDF",
         size: "1.1 MB",
-        date: "June 2025"
+        file: faqsFiles[0]
       },
       {
         title: "Implementation FAQs",
@@ -399,34 +429,16 @@ const ResourcesTabs = () => {
         color: "from-primary-blue to-primary-orange",
         type: "PDF",
         size: "0.9 MB",
-        date: "May 2025"
+        file: faqsFiles[1]
       },
       {
-        title: "Security FAQs",
-        description: "Information about compliance and data protection",
+        title: "Compliance and Data Protection FAQs",
+        description: "A Comprehensive Guide to Datablize Analytics' Robust Data Protection Strategies",
         icon: FileKey,
         color: "from-primary-blue to-primary-orange",
         type: "PDF",
-        size: "1.3 MB",
-        date: "April 2025"
-      },
-      {
-        title: "Pricing FAQs",
-        description: "Questions about licensing and subscription models",
-        icon: FileSpreadsheet,
-        color: "from-primary-blue to-primary-orange",
-        type: "PDF",
-        size: "0.7 MB",
-        date: "March 2025"
-      },
-      {
-        title: "Training FAQs",
-        description: "Information about certification and learning resources",
-        icon: FileClock,
-        color: "from-primary-blue to-primary-orange",
-        type: "PDF",
-        size: "0.8 MB",
-        date: "February 2025"
+        size: "0.9 MB",
+        file: faqsFiles[2]
       }
     ],
     videos: [
@@ -437,7 +449,6 @@ const ResourcesTabs = () => {
         color: "from-primary-blue to-primary-orange",
         type: "Video",
         size: "45 MB",
-        date: "June 2025",
         duration: "15:22"
       },
       {
@@ -447,40 +458,20 @@ const ResourcesTabs = () => {
         color: "from-primary-blue to-primary-orange",
         type: "Video",
         size: "68 MB",
-        date: "May 2025",
         duration: "22:15"
-      },
-      {
-        title: "Implementation Webinar",
-        description: "Best practices for successful deployment",
-        icon: Youtube,
-        color: "from-primary-blue to-primary-orange",
-        type: "Video",
-        size: "92 MB",
-        date: "April 2025",
-        duration: "32:45"
-      },
-      {
-        title: "IDP Feature Deep Dive",
-        description: "Advanced document intelligence capabilities",
-        icon: FileVideo,
-        color: "from-primary-blue to-primary-orange",
-        type: "Video",
-        size: "56 MB",
-        date: "March 2025",
-        duration: "18:30"
-      },
-      {
-        title: "Customer Testimonial",
-        description: "How State IT Dept transformed citizen services",
-        icon: Headphones,
-        color: "from-primary-blue to-primary-orange",
-        type: "Video",
-        size: "38 MB",
-        date: "February 2025",
-        duration: "12:10"
       }
     ]
+  };
+
+  // Function to handle preview
+  const handlePreview = (file) => {
+    if (file) {
+      // Open PDF in a new tab for preview
+      const previewWindow = window.open(file, '_blank');
+      if (!previewWindow) {
+        alert('Please allow popups to preview the PDF.');
+      }
+    }
   };
 
   return (
@@ -493,7 +484,7 @@ const ResourcesTabs = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <h2 className="text-4xl lg:text-5xl font-bold mb-6 bg-gradient-to-r from-primary-blue to-primary-orange bg-clip-text text-transparent">
+          <h2 className="text-4xl lg:text-5xl font-bold mb-6 bg-gradient-to-r from-primary-blue to-primary-orange bg-clip-text text-transparent pb-2">
             Knowledge Center
           </h2>
           <div className="w-24 h-1 bg-gradient-to-r from-primary-blue to-primary-orange mx-auto rounded-full mb-6"></div>
@@ -525,7 +516,7 @@ const ResourcesTabs = () => {
                 <div className={`w-12 h-12 bg-gradient-to-r ${resource.color} rounded-xl flex items-center justify-center mb-4 shadow-lg group-hover:scale-110 transition-transform duration-300`}>
                   <resource.icon size={20} className="text-white" />
                 </div>
-                <h3 className="text-lg font-bold text-primary-dark  transition-colors duration-300 mb-2">
+                <h3 className="text-lg font-bold text-primary-dark transition-colors duration-300 mb-2">
                   {resource.title}
                 </h3>
                 <p className="text-sm text-primary-dark leading-relaxed mb-4">
@@ -540,8 +531,18 @@ const ResourcesTabs = () => {
                     Duration: {resource.duration}
                   </div>
                 )}
-                <div className="mt-4">
-                  <button className="group flex items-center gap-2 text-primary-dark hover:text-primary-orange transition-colors duration-300">
+                <div className="mt-4 flex flex-col sm:flex-row justify-between items-center gap-2">
+                  <button 
+                    className="group flex items-center gap-2 text-primary-dark hover:text-primary-orange transition-colors duration-300"
+                    onClick={() => handlePreview(resource.file)}
+                  >
+                    <span className="font-medium">Preview</span>
+                    <ExternalLink size={16} className="group-hover:translate-y-0.5 transition-transform duration-300" />
+                  </button>
+                  <button 
+                    className="group flex items-center gap-2 text-primary-dark hover:text-primary-orange transition-colors duration-300"
+                    onClick={() => handleDownload(resource.file)}
+                  >
                     <span className="font-medium">Download</span>
                     <Download size={16} className="group-hover:translate-y-0.5 transition-transform duration-300" />
                   </button>
@@ -600,6 +601,18 @@ const Resources = () => {
       <ResourcesTabs />
     </div>
   );
+};
+
+// Function to handle download
+const handleDownload = (file) => {
+  if (file) {
+    const link = document.createElement('a');
+    link.href = file;
+    link.download = file.split('/').pop();
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
 };
 
 export default Resources;

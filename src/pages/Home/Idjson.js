@@ -1,0 +1,1 @@
+export default `{"@context":"https://schema.org","@type":"Product","name":"Datablize","description":"AI Powered Document Intelligence for Modern Enterprises","url":"${window.location.href}","brand":{"@type":"Brand","name":"Datablize"}}`;
