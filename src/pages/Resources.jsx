@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowRight, BookOpen, ChevronRight, Download, FileAxis3d, FileBadge, FileBarChart, FileBox, FileCheck, FileClock, FileCode, FileCog, FileDigit, FileHeart, FileInput, FileKey, FileMinus, FileOutput, FilePen, FileQuestion, FileScan, FileSearch, FileSignature, FileSpreadsheet, FileStack, FileText, FileUp, FileVideo, Film, Headphones, Play, Youtube, ExternalLink, AlertCircle } from 'lucide-react';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 // TabsNavigation Component
 const TabsNavigation = ({ tabs, activeTab, setActiveTab }) => {
@@ -184,51 +187,54 @@ const ResourcesHero = () => {
 const ResourcesTabs = () => {
   const [activeTab, setActiveTab] = useState('casestudies');
 
+  // Determine base URL based on environment
+  const BASE_URL = 'http://localhost:5173/' || 'www.datablize.com/'
+
+  // File paths for local PDFs (relative to the public folder, with base URL prepended)
+  const whitepaperFiles = [
+    `${BASE_URL}/documents/whitepaper/Whitepaper_Document_Intelligence_Processing.pdf`,
+    `${BASE_URL}/documents/whitepaper/Whitepaper_DPDPA_2023_Compliance_Strategies.pdf`,
+    `${BASE_URL}/documents/whitepaper/Whitepaper_HIPAA_GDPR_DPDPA_Unified_Approach.pdf`,
+    `${BASE_URL}/documents/whitepaper/Whitepaper_IDP_Cost_Reduction_Study.pdf`,
+    `${BASE_URL}/documents/whitepaper/Whitepaper_Zero_Paper_Offices.pdf`,
+  ];
+
+  const casestudyFiles = [
+    `${BASE_URL}/documents/casestudy/Case_Study_Record_Management.pdf`,
+    `${BASE_URL}/documents/casestudy/Case_Study_Automated_Invoice_Processing.pdf`,
+    `${BASE_URL}/documents/casestudy/Case_Study_Datablize_Analytics_Solution_Secure_Document_Storage.pdf`,
+    `${BASE_URL}/documents/casestudy/Case_Study_Digital_Archive_Migration.pdf`,
+    `${BASE_URL}/documents/casestudy/Case_Study_EHR_Digitization_for_Hospitals.pdf`,
+    `${BASE_URL}/documents/casestudy/Case_Study_G2C_Automation_Platform.pdf`,
+    `${BASE_URL}/documents/casestudy/Case_Study_Health_Insurance_Claims_Automation.pdf`,
+    `${BASE_URL}/documents/casestudy/Case_Study_KYC_AML_Automation.pdf`,
+  ];
+
+  const guideFiles = [
+    `${BASE_URL}/documents/guide/Guide_Digitization_Strategy_Guide_2025.pdf`,
+    `${BASE_URL}/documents/guide/Guide_DMS_Buyers_Guide_2025.pdf`,
+    `${BASE_URL}/documents/guide/Guide_Implementation_Checklist_Step_by_Step_Guide.pdf`,
+    `${BASE_URL}/documents/guide/Guide_Workflow_Automation_Playbook_2025.pdf`,
+  ];
+
+  const productdocsFiles = [
+    `${BASE_URL}/documents/products/Transforming_Document_Processing.pdf`,
+    `${BASE_URL}/documents/products/Datablize_Analytics_Product_Brochure.pdf`,
+  ];
+
+  const faqsFiles = [
+    `${BASE_URL}/documents/faqs/General_FAQs_Datablize_Analytics.pdf`,
+    `${BASE_URL}/documents/faqs/Implementation_FAQs_Datablize_Analytics_Deployment_and_Configuration.pdf`,
+    `${BASE_URL}/documents/faqs/Security_FAQs_Compliance_and_Data_Protection.pdf`,
+  ];
+
   const tabs = [
     { id: 'whitepapers', label: 'Whitepapers', icon: FileText },
     { id: 'casestudies', label: 'Case Studies', icon: FileBarChart },
     { id: 'guides', label: 'Guides', icon: BookOpen },
     { id: 'productdocs', label: 'Product Docs', icon: FileCode },
     { id: 'faqs', label: 'FAQs', icon: FileQuestion },
-    { id: 'videos', label: 'Videos', icon: Play }
-  ];
-
-  // File paths for local PDFs (relative to the public folder)
-  const whitepaperFiles = [
-    '/documents/whitepaper/Whitepaper  Document Intelligence Processing.pdf',
-    '/documents/whitepaper/Whitepaper DPDPA 2023 Compliance Strategies.pdf',
-    '/documents/whitepaper/Whitepaper HIPAA, GDPR & DPDPA Unified Approach.pdf',
-    '/documents/whitepaper/Whitepaper IDP Cost Reduction Study.pdf',
-    '/documents/whitepaper/Whitepaper Zero Paper Offices.pdf'
-  ];
-
-  const casestudyFiles = [
-    '/documents/casestudy/Case Study   Record Management.pdf',
-    '/documents/casestudy/Case Study Automated Invoice Processing.pdf',
-    '/documents/casestudy/Case Study Datablize Analytics Solution — Secure Document Storage.pdf',
-    '/documents/casestudy/Case Study Digital Archive Migration.pdf',
-    '/documents/casestudy/Case Study EHR Digitization for Hospitals.pdf',
-    '/documents/casestudy/Case Study G2C Automation Platform.pdf',
-    '/documents/casestudy/Case Study Health Insurance Claims Automation.pdf',
-    '/documents/casestudy/Case Study KYC & AML Automation.pdf'
-  ];
-
-  const guideFiles = [
-    '/documents/guide/Guide  Digitization Strategy Guide 2025.pdf',
-    "/documents/guide/Guide  DMS Buyer's Guide 2025.pdf",
-    '/documents/guide/Guide  Implementation Checklist Step-by-Step Guide.pdf',
-    '/documents/guide/Guide  Workflow Automation Playbook 2025.pdf'
-  ];
-
-  const productdocsFiles = [
-    '/documents/products/Transforming Document Processing.pdf',
-    '/documents/products/Datablize Analytics Product Brochure.pdf'
-  ];
-
-  const faqsFiles = [
-    '/documents/faqs/General FAQs Datablize Analytics.pdf',
-    '/documents/faqs/Implementation FAQs Datablize Analytics Deployment and Configuration.pdf',
-    '/documents/faqs/Security FAQs Compliance and Data Protection.pdf'
+    { id: 'videos', label: 'Videos', icon: Play },
   ];
 
   const resources = {
@@ -240,7 +246,7 @@ const ResourcesTabs = () => {
         color: "from-primary-blue to-primary-orange",
         type: "PDF",
         size: "2.4 MB",
-        file: whitepaperFiles[0]
+        file: whitepaperFiles[0],
       },
       {
         title: "DPDPA 2023 Compliance Strategies",
@@ -249,7 +255,7 @@ const ResourcesTabs = () => {
         color: "from-primary-blue to-primary-orange",
         type: "PDF",
         size: "1.8 MB",
-        file: whitepaperFiles[1]
+        file: whitepaperFiles[1],
       },
       {
         title: "HIPAA, GDPR & DPDPA",
@@ -258,7 +264,7 @@ const ResourcesTabs = () => {
         color: "from-primary-blue to-primary-orange",
         type: "PDF",
         size: "2.1 MB",
-        file: whitepaperFiles[2]
+        file: whitepaperFiles[2],
       },
       {
         title: "Intelligent Document Processing (IDP)",
@@ -267,7 +273,7 @@ const ResourcesTabs = () => {
         color: "from-primary-blue to-primary-orange",
         type: "PDF",
         size: "2.3 MB",
-        file: whitepaperFiles[3]
+        file: whitepaperFiles[3],
       },
       {
         title: "Zero Paper Offices",
@@ -276,7 +282,7 @@ const ResourcesTabs = () => {
         color: "from-primary-blue to-primary-orange",
         type: "PDF",
         size: "2.0 MB",
-        file: whitepaperFiles[4]
+        file: whitepaperFiles[4],
       },
     ],
     casestudies: [
@@ -287,7 +293,7 @@ const ResourcesTabs = () => {
         color: "from-primary-blue to-primary-orange",
         type: "PDF",
         size: "4.2 MB",
-        file: casestudyFiles[0]
+        file: casestudyFiles[0],
       },
       {
         title: "Automated Invoice Processing",
@@ -296,7 +302,7 @@ const ResourcesTabs = () => {
         color: "from-primary-blue to-primary-orange",
         type: "PDF",
         size: "3.8 MB",
-        file: casestudyFiles[1]
+        file: casestudyFiles[1],
       },
       {
         title: "Secure Document Storage",
@@ -306,7 +312,7 @@ const ResourcesTabs = () => {
         type: "PDF",
         size: "5.1 MB",
         date: "October 2024",
-        file: casestudyFiles[2]
+        file: casestudyFiles[2],
       },
       {
         title: "Transforming Digital Archives",
@@ -315,7 +321,7 @@ const ResourcesTabs = () => {
         color: "from-primary-blue to-primary-orange",
         type: "PDF",
         size: "2.9 MB",
-        file: casestudyFiles[3]
+        file: casestudyFiles[3],
       },
       {
         title: "EHR Digitization for Hospitals",
@@ -324,7 +330,7 @@ const ResourcesTabs = () => {
         color: "from-primary-blue to-primary-orange",
         type: "PDF",
         size: "3.5 MB",
-        file: casestudyFiles[4]
+        file: casestudyFiles[4],
       },
       {
         title: "G2C Document Automation",
@@ -333,7 +339,7 @@ const ResourcesTabs = () => {
         color: "from-primary-blue to-primary-orange",
         type: "PDF",
         size: "4.7 MB",
-        file: casestudyFiles[5]
+        file: casestudyFiles[5],
       },
       {
         title: "Health Insurance Claims Automation",
@@ -342,7 +348,7 @@ const ResourcesTabs = () => {
         color: "from-primary-blue to-primary-orange",
         type: "PDF",
         size: "3.2 MB",
-        file: casestudyFiles[6]
+        file: casestudyFiles[6],
       },
       {
         title: "KYC & AML Automation",
@@ -351,8 +357,8 @@ const ResourcesTabs = () => {
         color: "from-primary-blue to-primary-orange",
         type: "PDF",
         size: "5.3 MB",
-        file: casestudyFiles[7]
-      }
+        file: casestudyFiles[7],
+      },
     ],
     guides: [
       {
@@ -362,7 +368,7 @@ const ResourcesTabs = () => {
         color: "from-primary-blue to-primary-orange",
         type: "PDF",
         size: "6.2 MB",
-        file: guideFiles[0]
+        file: guideFiles[0],
       },
       {
         title: "Implementation Checklist",
@@ -371,7 +377,7 @@ const ResourcesTabs = () => {
         color: "from-primary-blue to-primary-orange",
         type: "PDF",
         size: "1.2 MB",
-        file: guideFiles[1]
+        file: guideFiles[1],
       },
       {
         title: "Workflow Automation Playbook",
@@ -380,7 +386,7 @@ const ResourcesTabs = () => {
         color: "from-primary-blue to-primary-orange",
         type: "PDF",
         size: "3.4 MB",
-        file: guideFiles[2]
+        file: guideFiles[2],
       },
       {
         title: "DPDPA Compliance Template",
@@ -389,8 +395,8 @@ const ResourcesTabs = () => {
         color: "from-primary-blue to-primary-orange",
         type: "DOCX",
         size: "0.8 MB",
-        file: guideFiles[3]
-      }
+        file: guideFiles[3],
+      },
     ],
     productdocs: [
       {
@@ -400,7 +406,7 @@ const ResourcesTabs = () => {
         color: "from-primary-blue to-primary-orange",
         type: "PDF",
         size: "8.4 MB",
-        file: productdocsFiles[0]
+        file: productdocsFiles[0],
       },
       {
         title: "DMS Handbook",
@@ -409,8 +415,8 @@ const ResourcesTabs = () => {
         color: "from-primary-blue to-primary-orange",
         type: "PDF",
         size: "12.1 MB",
-        file: productdocsFiles[1]
-      }
+        file: productdocsFiles[1],
+      },
     ],
     faqs: [
       {
@@ -420,7 +426,7 @@ const ResourcesTabs = () => {
         color: "from-primary-blue to-primary-orange",
         type: "PDF",
         size: "1.1 MB",
-        file: faqsFiles[0]
+        file: faqsFiles[0],
       },
       {
         title: "Implementation FAQs",
@@ -429,7 +435,7 @@ const ResourcesTabs = () => {
         color: "from-primary-blue to-primary-orange",
         type: "PDF",
         size: "0.9 MB",
-        file: faqsFiles[1]
+        file: faqsFiles[1],
       },
       {
         title: "Compliance and Data Protection FAQs",
@@ -438,8 +444,8 @@ const ResourcesTabs = () => {
         color: "from-primary-blue to-primary-orange",
         type: "PDF",
         size: "0.9 MB",
-        file: faqsFiles[2]
-      }
+        file: faqsFiles[2],
+      },
     ],
     videos: [
       {
@@ -449,7 +455,7 @@ const ResourcesTabs = () => {
         color: "from-primary-blue to-primary-orange",
         type: "Video",
         size: "45 MB",
-        duration: "15:22"
+        duration: "15:22",
       },
       {
         title: "Use Case: Insurance Claims",
@@ -458,20 +464,35 @@ const ResourcesTabs = () => {
         color: "from-primary-blue to-primary-orange",
         type: "Video",
         size: "68 MB",
-        duration: "22:15"
-      }
-    ]
+        duration: "22:15",
+      },
+    ],
   };
 
   // Function to handle preview
   const handlePreview = (file) => {
-    if (file) {
-      // Open PDF in a new tab for preview
-      const previewWindow = window.open(file, '_blank');
-      if (!previewWindow) {
-        alert('Please allow popups to preview the PDF.');
-      }
+    if (!file) {
+      alert('File not found. Please check the file path.');
+      return;
     }
+    const previewWindow = window.open(file, '_blank');
+    if (!previewWindow) {
+      alert('Unable to open preview. Please allow popups or check the file URL.');
+    }
+  };
+
+  // Function to handle download
+  const handleDownload = (file) => {
+    if (!file) {
+      alert('File not found. Please check the file path.');
+      return;
+    }
+    const link = document.createElement('a');
+    link.href = file;
+    link.download = file.split('/').pop();
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   return (
