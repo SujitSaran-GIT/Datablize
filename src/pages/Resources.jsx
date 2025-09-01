@@ -183,14 +183,14 @@ const ResourcesHero = () => {
 
 // Resources Tabs Section
 const ResourcesTabs = () => {
-  const [activeTab, setActiveTab] = useState('casestudies');
+  const [activeTab, setActiveTab] = useState('whitepapers');
 
   // Determine base URL based on environment
-  const BASE_URL = 'http://localhost:5173/' || 'www.datablize.com/'
+  const BASE_URL = import.meta.env.REACT_APP_BASE_URL || '';
 
   // File paths for local PDFs (relative to the public folder, with base URL prepended)
   const whitepaperFiles = [
-    `${BASE_URL}/documents/whitepaper/Whitepaper_Document_Intelligence_Processing.pdf`,
+    `${BASE_URL}/documents/whitepaper/Whitepaper  Document Intelligence Processing.pdf`,
     `${BASE_URL}/documents/whitepaper/Whitepaper_DPDPA_2023_Compliance_Strategies.pdf`,
     `${BASE_URL}/documents/whitepaper/Whitepaper_HIPAA_GDPR_DPDPA_Unified_Approach.pdf`,
     `${BASE_URL}/documents/whitepaper/Whitepaper_IDP_Cost_Reduction_Study.pdf`,
@@ -209,21 +209,21 @@ const ResourcesTabs = () => {
   ];
 
   const guideFiles = [
-    `${BASE_URL}/documents/guide/Guide_Digitization_Strategy_Guide_2025.pdf`,
-    `${BASE_URL}/documents/guide/Guide_DMS_Buyers_Guide_2025.pdf`,
-    `${BASE_URL}/documents/guide/Guide_Implementation_Checklist_Step_by_Step_Guide.pdf`,
-    `${BASE_URL}/documents/guide/Guide_Workflow_Automation_Playbook_2025.pdf`,
+    `/documents/guide/Guide_Digitization_Strategy_Guide_2025.pdf`,
+    `/documents/guide/Guide_DMS_Buyers_Guide_2025.pdf`,
+    `/documents/guide/Guide_Implementation_Checklist_Step_by_Step_Guide.pdf`,
+    `/documents/guide/Guide_Workflow_Automation_Playbook_2025.pdf`,
   ];
 
   const productdocsFiles = [
-    `${BASE_URL}/documents/products/Transforming_Document_Processing.pdf`,
-    `${BASE_URL}/documents/products/Datablize_Analytics_Product_Brochure.pdf`,
+    `/documents/products/Transforming_Document_Processing.pdf`,
+    `/documents/products/Datablize_Analytics_Product_Brochure.pdf`,
   ];
 
   const faqsFiles = [
-    `${BASE_URL}/documents/faqs/General_FAQs_Datablize_Analytics.pdf`,
-    `${BASE_URL}/documents/faqs/Implementation_FAQs_Datablize_Analytics_Deployment_and_Configuration.pdf`,
-    `${BASE_URL}/documents/faqs/Security_FAQs_Compliance_and_Data_Protection.pdf`,
+    `/documents/faqs/General_FAQs_Datablize_Analytics.pdf`,
+    `/documents/faqs/Implementation_FAQs_Datablize_Analytics_Deployment_and_Configuration.pdf`,
+    `/documents/faqs/Security_FAQs_Compliance_and_Data_Protection.pdf`,
   ];
 
   const tabs = [
